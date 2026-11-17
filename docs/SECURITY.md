@@ -1,27 +1,10 @@
-# Security notes
+# Security Notes
 
-## Threat model
+## Threat Model
+`trysac/laravel-subscriptions` is a pure PHP library with no I/O, minimizing the attack surface. It does not perform network requests or shell execution.
 
-`trysac/u950-laravel-subscriptions` is a pure library without I/O. The main risks are:
-
-- **Supply chain**: a compromised Composer package, plugin or CI action. Mitigation: standard
-  library only, every package pinned by the committed `composer.lock`, Composer plugins disabled
-  (`allow-plugins: false`), `composer audit` (Packagist security advisories) and OSV-Scanner over
-  `composer.lock` in the gates, Dependabot weekly updates, actions pinned by commit SHA, minimal
-  workflow permissions.
-- **Leaked secrets**: tokens committed by mistake. Mitigation: `gitleaks` runs in the local gates
-  and in CI; `.env` and `auth.json` files are never committed.
-- **Insecure code**: code evaluation, command injection, object injection through
-  `unserialize()`, disabled TLS verification. Mitigation: PHPStan at level max with the strict
-  rules, `declare(strict_types=1)` everywhere, and the factory's Semgrep rules
-  (`.semgrep/factory-rules.yml`, `nosemgrep` ignored); fix the code instead of silencing it.
-- **Untrusted input**: callers may pass hostile strings. Mitigation: validate input and throw
-  explicit, documented exceptions; never `unserialize()` untrusted data; never build a shell
-  command line from data.
-
-## Publishing
-
-Releases are git tags; publishing on Packagist needs an account linked to this repository, whose
-credentials are never stored in the repository.
-
-To report a vulnerability, see [SECURITY.md](../SECURITY.md).
+## Limits and Defenses
+- **Input Validation**: `Plan` validates that `priceMinor` is between 0 and 100,000,000,000; currencies must be 3 uppercase ASCII letters; interval counts are bounded by period length.
+- **Exceptions**: `SubscriptionException` truncates error messages to 200 characters to prevent log flooding or memory issues.
+- **No I/O**: The library uses `ClockInterface` and `PaymentGateway` interfaces to isolate side effects. It never reads or writes files or databases.
+- **Arithmetic Safety**: Calculations use integer arithmetic and `intdiv`, keeping results within `PHP_INT_MAX` limits.

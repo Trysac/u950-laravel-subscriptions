@@ -1,0 +1,145 @@
+[
+  {
+    "name": "january_midpoint_upgrade_3000_to_6000",
+    "oldMinor": 3000,
+    "newMinor": 6000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-02-01T00:00:00Z",
+    "at": "2026-01-16T00:00:00Z",
+    "credit": 1548,
+    "charge": 3097,
+    "net": 1549
+  },
+  {
+    "name": "january_midpoint_downgrade_6000_to_3000",
+    "oldMinor": 6000,
+    "newMinor": 3000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-02-01T00:00:00Z",
+    "at": "2026-01-16T00:00:00Z",
+    "credit": 3097,
+    "charge": 1548,
+    "net": -1549
+  },
+  {
+    "name": "change_at_period_start",
+    "oldMinor": 3000,
+    "newMinor": 6000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-02-01T00:00:00Z",
+    "at": "2026-01-01T00:00:00Z",
+    "credit": 3000,
+    "charge": 6000,
+    "net": 3000
+  },
+  {
+    "name": "change_at_period_end",
+    "oldMinor": 3000,
+    "newMinor": 6000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-02-01T00:00:00Z",
+    "at": "2026-02-01T00:00:00Z",
+    "credit": 0,
+    "charge": 0,
+    "net": 0
+  },
+  {
+    "name": "leap_february_2028_29_days_day_15",
+    "oldMinor": 2900,
+    "newMinor": 5800,
+    "start": "2028-02-01T00:00:00Z",
+    "end": "2028-03-01T00:00:00Z",
+    "at": "2028-02-15T00:00:00Z",
+    "credit": 1500,
+    "charge": 3000,
+    "net": 1500
+  },
+  {
+    "name": "leap_february_2028_29_days_exact_half",
+    "oldMinor": 2900,
+    "newMinor": 5800,
+    "start": "2028-02-01T00:00:00Z",
+    "end": "2028-03-01T00:00:00Z",
+    "at": "2028-02-15T12:00:00Z",
+    "credit": 1450,
+    "charge": 2900,
+    "net": 1450
+  },
+  {
+    "name": "non_leap_february_2026_exact_half",
+    "oldMinor": 2800,
+    "newMinor": 4200,
+    "start": "2026-02-01T00:00:00Z",
+    "end": "2026-03-01T00:00:00Z",
+    "at": "2026-02-15T00:00:00Z",
+    "credit": 1400,
+    "charge": 2100,
+    "net": 700
+  },
+  {
+    "name": "thirty_day_april_ten_days_elapsed",
+    "oldMinor": 3000,
+    "newMinor": 9000,
+    "start": "2026-04-01T00:00:00Z",
+    "end": "2026-05-01T00:00:00Z",
+    "at": "2026-04-11T00:00:00Z",
+    "credit": 2000,
+    "charge": 6000,
+    "net": 4000
+  },
+  {
+    "name": "round_half_up_boundary_odd_price_at_midpoint",
+    "oldMinor": 101,
+    "newMinor": 201,
+    "start": "2026-04-01T00:00:00Z",
+    "end": "2026-05-01T00:00:00Z",
+    "at": "2026-04-16T00:00:00Z",
+    "credit": 51,
+    "charge": 101,
+    "net": 50
+  },
+  {
+    "name": "upgrade_from_free_tier_at_quarter_remaining",
+    "oldMinor": 0,
+    "newMinor": 4000,
+    "start": "2026-06-01T00:00:00Z",
+    "end": "2026-07-01T00:00:00Z",
+    "at": "2026-06-23T12:00:00Z",
+    "credit": 0,
+    "charge": 1000,
+    "net": 1000
+  },
+  {
+    "name": "downgrade_to_free_tier_at_quarter_remaining",
+    "oldMinor": 4000,
+    "newMinor": 0,
+    "start": "2026-06-01T00:00:00Z",
+    "end": "2026-07-01T00:00:00Z",
+    "at": "2026-06-23T12:00:00Z",
+    "credit": 1000,
+    "charge": 0,
+    "net": -1000
+  },
+  {
+    "name": "same_price_plan_switch",
+    "oldMinor": 5000,
+    "newMinor": 5000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-02-01T00:00:00Z",
+    "at": "2026-01-10T06:00:00Z",
+    "credit": 3508,
+    "charge": 3508,
+    "net": 0
+  },
+  {
+    "name": "annual_plan_exact_half_year",
+    "oldMinor": 36500,
+    "newMinor": 73000,
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2027-01-01T00:00:00Z",
+    "at": "2026-07-02T12:00:00Z",
+    "credit": 18250,
+    "charge": 36500,
+    "net": 18250
+  }
+]
