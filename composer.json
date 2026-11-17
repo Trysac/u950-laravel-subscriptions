@@ -1,0 +1,39 @@
+{
+    "name": "trysac/u950-laravel-subscriptions",
+    "description": "Payment-provider-agnostic subscription billing core with plans, trials, calendar-anchored periods, exact integer proration and sequential invoices, ready for a Laravel adapter",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Miguel Gomez"
+        }
+    ],
+    "homepage": "https://github.com/Trysac/u950-laravel-subscriptions",
+    "require": {
+        "php": ">=8.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-phpunit": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.1",
+        "phpunit/phpunit": "^13.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Trysac\\LaravelSubscriptions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Trysac\\LaravelSubscriptions\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": false,
+        "platform": {
+            "php": "8.4.1"
+        },
+        "sort-packages": true
+    }
+}

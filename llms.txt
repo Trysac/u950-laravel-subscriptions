@@ -1,0 +1,16 @@
+# laravel-subscriptions
+
+> Payment-provider-agnostic subscription billing core with plans, trials, calendar-anchored periods, exact integer proration and sequential invoices, ready for a Laravel adapter Composer package `trysac/u950-laravel-subscriptions`, namespace `Trysac\LaravelSubscriptions`, MIT
+> licensed, PHP >= 8.4, standard library only.
+
+## Docs
+
+- [README](README.md): problem, install, usage example
+- [AGENTS](AGENTS.md): commands, folder map, conventions, limits
+- [Architecture](docs/ARCHITECTURE.md): shape of the library and its public API
+- [Testing](docs/TESTING.md): how to run and extend the tests
+
+## Optional
+
+- [Stack](docs/STACK.md): tools used and discarded
+- [Changelog](CHANGELOG.md): release history
