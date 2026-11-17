@@ -1,31 +1,12 @@
 # Architecture
 
-## Purpose
+`trysac/laravel-subscriptions` is a dependency-free billing domain core designed to sit beneath a framework adapter.
 
-`trysac/u950-laravel-subscriptions` is a small, dependency-free PHP library: Payment-provider-agnostic subscription billing core with plans, trials, calendar-anchored periods, exact integer proration and sequential invoices, ready for a Laravel adapter
+## Components
 
-## Shape
-
-```text
-caller code --> namespace Trysac\LaravelSubscriptions (src/, PSR-4)
-                    |
-                    +-- final classes with static, pure functions; no I/O, no global mutable state
-                    +-- @internal helpers (optional)
-```
-
-- **Public API**: every public class, method, constant and property under `src/` that is not
-  marked `@internal`. Internal helpers may change without a major version.
-- **Errors**: invalid input throws an `\InvalidArgumentException` subclass of the library (such as
-  `BlankInputException`) documented with `@throws`. The library never echoes, exits or changes
-  global state (ini settings, error handlers, the locale).
-- **Side effects**: none. If a feature needs I/O, accept a stream resource, a string or a small
-  interface instead of opening resources, and record the choice in an ADR.
-
-## Quality contract
-
-`scripts/check.php` is the single definition of the gates; `fabrica.json` tells the factory and CI
-how to run it. See [TESTING.md](TESTING.md).
-
-## Decisions
-
-Architecture decisions are recorded in [decisions/](decisions/) as numbered ADRs.
+- **`Plan` and `Subscription`**: Immutable `readonly` value objects representing plan rules and subscription lifecycle state (`trialing`, `active`, `past_due`, `canceled`).
+- **`PeriodCalculator`**: Pure calendar arithmetic in UTC. Monthly and yearly intervals preserve the original anchor day of the month and clamp to the last day of shorter months (e.g. Jan 31 -> Feb 28 -> Mar 31 -> Apr 30).
+- **`Proration`**: Static integer calculator computing `credit` and `charge` with exact round-half-up integer division:
+  `intdiv(2 * price * remaining + total, 2 * total)`.
+- **`SubscriptionService`**: Coordinates `ClockInterface`, `PaymentGateway`, and `InvoiceNumberer` to execute `subscribe`, `renew`, `changePlan`, `cancel`, and `retryPayment`.
+- **`Cli`**: Stream-based command runner exposing `prorate <old> <new> <start> <end> <at>` as JSON.

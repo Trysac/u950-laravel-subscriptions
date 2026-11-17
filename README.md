@@ -1,48 +1,33 @@
 # laravel-subscriptions
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![CI](https://github.com/Trysac/u950-laravel-subscriptions/actions/workflows/ci.yml/badge.svg)](https://github.com/Trysac/u950-laravel-subscriptions/actions/workflows/ci.yml)
+Payment-provider-agnostic subscription billing core in pure PHP 8.4 with plans, trials, calendar-anchored periods, exact integer proration, and sequential invoices.
 
-Payment-provider-agnostic subscription billing core with plans, trials, calendar-anchored periods, exact integer proration and sequential invoices, ready for a Laravel adapter
-
-## Problem
-
-Describe in two or three sentences the concrete problem this utility solves, who hits it, and what
-they do today without it. Replace this paragraph when the first real feature lands.
-
-## Install
-
-```sh
-composer require trysac/u950-laravel-subscriptions
-```
-
-Until it is published on Packagist, add this repository as a VCS repository in your
-`composer.json` and require a release tag. Requires PHP 8.4 or newer. No dependencies outside the
-PHP standard library.
+## The Problem
+SaaS teams on Laravel often bind their subscription logic to a single payment provider, pushing plan changes, trials, and proration into provider dashboards where they cannot be unit-tested. Hand-written proration logic frequently drifts by cents due to floating-point arithmetic. This library keeps the state machine and money arithmetic in plain PHP using integer minor units, a `ClockInterface`, and a `PaymentGateway` interface.
 
 ## Usage
-
 ```php
-<?php
+use Trysac\LaravelSubscriptions\{FakeGateway, FrozenClock, Plan, SequentialNumberer, SubscriptionService};
 
-declare(strict_types=1);
-
-use Trysac\LaravelSubscriptions\Text;
-
-// normalize() trims surrounding whitespace and lower-cases the text.
-$name = Text::normalize('  Hello World '); // 'hello world'
-
-// Blank input is rejected explicitly instead of returning an empty string.
-Text::normalize('   '); // throws BlankInputException ('input is blank')
+$start = new \DateTimeImmutable('2026-01-01T00:00:00Z');
+$clock = new FrozenClock($start);
+$service = new SubscriptionService($clock, new FakeGateway(), new SequentialNumberer());
+$sub = $service->subscribe(new Plan('basic', 3000, 'USD', 'month'), $start);
+$clock->setTo(new \DateTimeImmutable('2026-01-16T00:00:00Z'));
+$change = $service->changePlan($sub, new Plan('pro', 6000, 'USD', 'month'));
+// $change->proration->credit === 1548, $change->proration->charge === 3097
 ```
 
-## Documentation
+## API Summary
+- **`Plan`**: Immutable plan definition (`priceMinor`, `interval`, `trialDays`).
+- **`Subscription`**: Lifecycle snapshot (`status`, `anchor`, `currentPeriodStart`).
+- **`SubscriptionService`**: Coordinates `subscribe`, `renew`, `changePlan`, `cancel`, `retryPayment`.
+- **`Proration`**: Calculates exact adjustments for mid-period plan changes using `intdiv(2 * price * remaining + total, 2 * total)`.
+- **Limits/Options**: Currencies are 3 uppercase ASCII letters; `priceMinor` max 100,000,000,000; interval counts: month 1-12, year 1, week 1-52, day 1-365.
+- **Errors**: `SubscriptionException` provides codes: `invalid_price`, `invalid_interval`, `invalid_currency`, `currency_mismatch`, `invalid_state`, `invalid_date`.
 
-- [Architecture](docs/ARCHITECTURE.md) and [decisions](docs/decisions/)
-- [Testing](docs/TESTING.md) and [security](docs/SECURITY.md)
-- [Project record](docs/PROJECT.md) and [stack](docs/STACK.md)
-- [Changelog](CHANGELOG.md) and [contributing guide](CONTRIBUTING.md)
+## Why not Laravel Cashier?
+Laravel Cashier binds subscription logic to a specific payment provider, preventing unit-testing of core billing logic. This library is provider-agnostic, deterministic, and avoids floating-point drift.
 
-## License
-
-[MIT](LICENSE) (c) 2026 Miguel Gomez
+## Security
+See [docs/SECURITY.md](docs/SECURITY.md).

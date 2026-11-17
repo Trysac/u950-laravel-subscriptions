@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Trysac\LaravelSubscriptions;
 
 /**
- * The input is empty or holds only whitespace.
+ * Thrown when text normalization receives blank input.
  */
-final class BlankInputException extends \InvalidArgumentException
+final class BlankInputException extends SubscriptionException
 {
     /**
-     * Creates the exception, with the message "input is blank" unless another one is given.
+     * Creates a new BlankInputException.
      *
-     * @param string $message the message
-     * @param null|\Throwable $previous the exception that caused this one
+     * @param string $message the exception message
+     * @param ?\Throwable $previous the underlying cause
      */
     public function __construct(string $message = 'input is blank', ?\Throwable $previous = null)
     {
-        parent::__construct($message, 0, $previous);
+        parent::__construct('invalid_state', $message, $previous);
     }
 }
